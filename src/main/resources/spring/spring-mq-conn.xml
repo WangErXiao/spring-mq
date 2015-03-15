@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd
+        http://www.springframework.org/schema/rabbit
+        http://www.springframework.org/schema/rabbit/spring-rabbit-1.2.xsd"
+       default-autowire="byName">
+    <context:annotation-config />
+    <context:component-scan base-package="com.yao"/>
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="1" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:config/rabbit-config.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!-- 连接服务配置  -->
+    <rabbit:connection-factory id="rabbitConnectionFactory" host="${rabbit.server.host}"
+                               username="${rabbit.server.username}"
+                               password="${rabbit.server.password}"
+                               port="${rabbit.server.port}" />
+    <rabbit:admin connection-factory="rabbitConnectionFactory"/>
+
+    <!--  队列声明-->
+    <rabbit:queue id="q_test" durable="true"
+                  auto-delete="false" exclusive="false" name="q_test" />
+
+    <!-- exchange queue binging key -->
+    <rabbit:direct-exchange name="my-mq-exchange" durable="true"
+                            auto-delete="false" id="my-mq-exchange">
+        <rabbit:bindings>
+            <rabbit:binding queue="q_test" key="q_test_key"/>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+    <!--message converter-->
+
+    <!-- spring amqp默认的是jackson 的一个插件,目的将生产者生产的数据转换为json存入消息队列，由于fastjson的速度快于jackson,这里替换为fastjson的一个实现 -->
+
+    <!-- spring template声明-->
+    <rabbit:template exchange="my-mq-exchange"
+                     id="amqpTemplate"
+                     connection-factory="rabbitConnectionFactory"
+                     />
+
+</beans>
