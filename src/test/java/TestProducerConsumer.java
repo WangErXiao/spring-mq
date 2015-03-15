@@ -20,12 +20,15 @@ public class TestProducerConsumer {
 
     @Test
     public void send(){
-        firstProducer.sendDataToQueue("first message");
-       // System.out.println(firstConsumer.getMsg());
+       for (int i=0;i<10;i++){
+           firstProducer.sendDataToQueue("first message:"+i);
+       }
     }
 
     @Test
     public void pull(){
-        System.out.println(firstConsumer.getMsg());
+        for (int i=0;i<10;i++) {
+            System.out.println(firstConsumer.getMsg());
+        }
     }
 }

@@ -12,6 +12,6 @@ public class FirstConsumer {
     @Autowired
     private AmqpTemplate amqpTemplate;
     public Object getMsg(){
-       return amqpTemplate.receiveAndConvert("q_test");
+       return amqpTemplate.receiveAndConvert("q_test02");
     }
 }

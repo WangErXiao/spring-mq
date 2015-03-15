@@ -12,6 +12,6 @@ public class FirstProducer {
     @Autowired
     private AmqpTemplate amqpTemplate;
     public void sendDataToQueue(Object o){
-        amqpTemplate.convertAndSend("q_test_key",o);
+        amqpTemplate.convertAndSend("q_test_key01",o);
     }
 }

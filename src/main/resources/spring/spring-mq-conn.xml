@@ -29,24 +29,22 @@
                                password="${rabbit.server.password}"
                                port="${rabbit.server.port}" />
     <rabbit:admin connection-factory="rabbitConnectionFactory"/>
-
     <!--  队列声明-->
-    <rabbit:queue id="q_test" durable="true"
-                  auto-delete="false" exclusive="false" name="q_test" />
-
+    <rabbit:queue id="q_test01" durable="true"
+                  auto-delete="false" exclusive="false" name="q_test01" />
+       <rabbit:queue id="q_test02" durable="true"
+                  auto-delete="false" exclusive="false" name="q_test02" />
     <!-- exchange queue binging key -->
     <rabbit:direct-exchange name="my-mq-exchange" durable="true"
                             auto-delete="false" id="my-mq-exchange">
         <rabbit:bindings>
-            <rabbit:binding queue="q_test" key="q_test_key"/>
+            <rabbit:binding queue="q_test01" key="q_test_key01"/>
+            <rabbit:binding queue="q_test02" key="q_test_key02"/>
         </rabbit:bindings>
     </rabbit:direct-exchange>
     <!--message converter-->
-
     <!-- spring amqp默认的是jackson 的一个插件,目的将生产者生产的数据转换为json存入消息队列，由于fastjson的速度快于jackson,这里替换为fastjson的一个实现 -->
-
     <bean id="jsonMessageConverter" class="com.yao.convert.FastJsonMessageConverter"/>
-
 
     <!-- spring template声明-->
     <rabbit:template exchange="my-mq-exchange"
