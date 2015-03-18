@@ -1,5 +1,6 @@
 package com.yao.consumer;
 
+import com.yao.model.Dog;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,6 @@ public class FirstConsumer {
     @Autowired
     private AmqpTemplate amqpTemplate;
     public Object getMsg(){
-       return amqpTemplate.receiveAndConvert("q_test02");
+       return amqpTemplate.receiveAndConvert("q_test01");
     }
 }

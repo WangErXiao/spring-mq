@@ -51,6 +51,7 @@
                      id="amqpTemplate"
                      connection-factory="rabbitConnectionFactory"
                      message-converter="jsonMessageConverter"
+
                      />
 
 </beans>
