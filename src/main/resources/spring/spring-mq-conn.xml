@@ -53,5 +53,10 @@
                      message-converter="jsonMessageConverter"
 
                      />
-
+    <rabbit:listener-container id="beforeConsultXmppListener"
+                               connection-factory="rabbitConnectionFactory" message-converter="jsonMessageConverter"
+                               concurrency="3">
+        <rabbit:listener queues="q_test01" ref="secondConsumer"
+                         method="onMessage" />
+    </rabbit:listener-container>
 </beans>
